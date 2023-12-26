@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Portler</title>
+    <link rel="stylesheet" href="./style/style.css">
+    <link href="./style/fontawesome-free-6.3.0-web/css/fontawesome.css" rel="stylesheet">
+    <link href="./style/fontawesome-free-6.3.0-web/css/brands.css" rel="stylesheet">
+    <link href="./style/fontawesome-free-6.3.0-web/css/solid.css" rel="stylesheet">
+    <script type="text/javascript" src="./js/Node.js" ></script>
+    <script type="text/javascript" src="./js/data.js" ></script>
+</head>
+<body>
+    <div class="container">
+        <div class="menu">
+            <i class="fa-solid fa-right-from-bracket" id="menuBtn"></i>
+        </div>
+        <div class="input" id="input">
+            <h3>Add Connection</h3>
+            <div id="form">
+                <input type="text" placeholder="From" id="from" /> 
+                <br id="fromBr">
+                <input type="text" placeholder="To" id="to" /> 
+                <br id="toBr">
+                <input type="number" placeholder="Hours" class="time" id="hours" />
+                <input type="number" placeholder="Mins" class="time" id="mins" /> 
+                <br>
+                <input type="reset" value="Clear" class="btn" />
+                <input type="submit" value="Add" class="btn add" id="addBtn" />
+                <input type="submit" value="Remove" class="btn remove" id="removeBtn" />
+            </div>
+        </div>
+        <div class="map">
+            <canvas></canvas>
+        </div>
+    </div>
+    <script type="text/javascript" src="./js/map.js" ></script>
+    <script type="text/javascript" src="./js/main.js" ></script>
+</body>
+</html>

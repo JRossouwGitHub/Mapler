@@ -1,0 +1,116 @@
+:root{
+    --primary: #272727;
+    --secondary: #3b3b3b;
+    --sanctuary: rgb(0, 119, 167);
+    --font-color: #CDCDCD
+}
+
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background-color: var(--secondary);
+    color: var(--font-color);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container{
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+}
+
+.menu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 5rem;
+    background-color: var(--primary);
+    border-right: 1px solid var(--secondary);
+    font-size: 2rem;
+    height: max-content;
+}
+
+.menu > * {
+    cursor: pointer;
+    margin: 1rem;
+}
+
+.input{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 15rem;
+    background-color: var(--primary);
+    padding: 1rem;
+    height: max-content;
+}
+
+input{
+    background-color: inherit;
+    border: 1px solid white;
+    border-radius: 5px;
+    margin: 0.25rem;
+    padding: 1rem;
+    color: var(--font-color);
+}
+
+input:focus{
+    outline: var(--sanctuary);
+    border: 1px solid var(--sanctuary);
+}
+
+.time{
+    width: 3.75rem;
+}
+
+.btn{
+    width: 6rem;
+    cursor: pointer;
+}
+
+.add{
+    float: right;
+    background-color: white;
+    color: black;
+}
+
+.remove{
+    float: right;
+    background-color: red;
+    color: white;
+}
+
+.map{
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    cursor: grab;
+}
+
+.list{
+    display: block;
+    position: absolute;
+    background-color: var(--primary);
+    border: 1px solid var(--sanctuary);
+    border-radius: 5px;
+    margin-left: 3px;
+    height: max-content;
+    max-height: 15rem;
+    overflow-y: scroll;
+}
+
+.listItem{
+    border-bottom: 1px solid var(--secondary);
+    padding: 0.75rem;
+    cursor: pointer;
+}
+
+.flex{
+    display: flex;
+    flex-direction: column;
+}
