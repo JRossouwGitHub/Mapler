@@ -2,6 +2,10 @@ class Node {
     constructor(x = 0, y = 0, w = 50, h = 50, name = "", timer = {enabled: false, time: {h: 0, m: 0}}, color = "#FF0000"){
         this.x = x
         this.y = y
+        this.position = {
+            x: x,
+            y: y
+        }
         this.w = w
         this.h = h
         this.name = name
@@ -31,7 +35,7 @@ class Node {
         ctx.beginPath();
         ctx.fillStyle = "#FFF";
         ctx.strokeStyle = "#FFF";
-        ctx.font = "20px Arial";
+        ctx.font = (this.w / 2.5) +"px Arial";
         ctx.textAlign = "center";
         ctx.fillText(this.name, this.x + this.w / 2, this.y - this.h / 8);
         ctx.closePath();

@@ -1,6 +1,7 @@
 const map = document.getElementsByClassName('map')[0]
 const canvas = document.getElementsByTagName('canvas')[0]
 const ctx = canvas.getContext('2d')
+let scrollScale = 1
 
 canvas.width = map.offsetWidth
 canvas.height = map.offsetHeight
@@ -80,8 +81,8 @@ let portals = [
 map.addEventListener('mousedown', (e) => {
     map.style.cursor = 'grabbing'
     isGrabbing = true
-    mouse.x.init = e.clientX
-    mouse.y.init = e.clientY
+    mouse.x.init = e.offsetX
+    mouse.y.init = e.offsetY
 })
 
 map.addEventListener('mouseup', (e) => {
@@ -90,15 +91,23 @@ map.addEventListener('mouseup', (e) => {
 })
 
 map.addEventListener('mousemove', (e) => {
+    mouse.x.current = e.offsetX
+    mouse.y.current = e.offsetY
     if(isGrabbing){
-        mouse.x.current = e.clientX
-        mouse.y.current = e.clientY
         xDiff = (mouse.x.current - mouse.x.init)
         yDiff = (mouse.y.current - mouse.y.init)
         recursivelyUpdateMap(portals, xDiff, yDiff)
-        mouse.x.init = e.clientX
-        mouse.y.init = e.clientY
+        mouse.x.init = e.offsetX
+        mouse.y.init = e.offsetY
     }
+})
+
+map.addEventListener('wheel', (e) => {
+    scrollScale += -(e.deltaY / 1000)
+    if(scrollScale <= 1) scrollScale = 1
+    if(scrollScale >= 2) scrollScale = 2
+
+    console.log(scrollScale)
 })
 
 const recursivelyUpdateMap = (portals, xDiff, yDiff) => {
@@ -145,7 +154,7 @@ const recursivelyUpdatePortals = (portals, parentPortal = null) => {
                 ctx.fillStyle = "#FFF";
                 ctx.strokeStyle = "#FFF";
             }
-            ctx.font = "20px Arial";
+            ctx.font = (portal.node.w / 2.5) + "px Arial";
             ctx.textAlign = "center";
             ctx.fillText(timeDisplay, xm + (timeDisplay.length / 2), ym + timeDisplay.length);
             ctx.closePath();
@@ -227,8 +236,11 @@ const recursivelyUpdateTimers = (portals) => {
 
 const main = () => {
     requestAnimationFrame(main)
+    ctx.save()
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.scale(scrollScale, scrollScale)
     recursivelyUpdatePortals(portals)
+    ctx.restore()
 }
 
 setInterval(() => {
