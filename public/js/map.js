@@ -234,6 +234,6 @@ const main = () => {
 setInterval(() => {
     recursivelyUpdateTimers(portals)
     recursivelyRemovePortals(portals, null, '', '')
-}, 100)
+}, 60 * 1000)
 
 main()
