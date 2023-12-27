@@ -68,20 +68,23 @@ input:focus{
 }
 
 .btn{
-    width: 6rem;
+    display: block;
     cursor: pointer;
+    width: 12rem;
 }
 
 .add{
-    float: right;
+    display: inline-block;
     background-color: white;
     color: black;
+    width: 5.5rem;
 }
 
 .remove{
-    float: right;
+    display: inline-block;
     background-color: red;
     color: white;
+    width: 6rem;
 }
 
 .map{

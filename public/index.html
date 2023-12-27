@@ -13,22 +13,24 @@
 </head>
 <body>
     <div class="container">
-        <div class="menu">
-            <i class="fa-solid fa-right-from-bracket" id="menuBtn"></i>
-        </div>
-        <div class="input" id="input">
-            <h3>Manage Connection</h3>
-            <div id="form">
-                <input type="text" placeholder="From" id="from" /> 
-                <br id="fromBr">
-                <input type="text" placeholder="To" id="to" /> 
-                <br id="toBr">
-                <input type="number" placeholder="Hours" class="time" id="hours" />
-                <input type="number" placeholder="Mins" class="time" id="mins" /> 
-                <br>
-                <input type="reset" value="Clear" class="btn" />
-                <input type="submit" value="Add" class="btn add" id="addBtn" />
-                <input type="submit" value="Remove" class="btn remove" id="removeBtn" />
+        <div style="display: flex; position: absolute;">
+            <div class="menu">
+                <i class="fa-solid fa-right-from-bracket" id="menuBtn"></i>
+            </div>
+            <div class="input" id="input">
+                <h3>Manage Connection</h3>
+                <div id="form">
+                    <input type="text" placeholder="From" id="from" /> 
+                    <br id="fromBr">
+                    <input type="text" placeholder="To" id="to" /> 
+                    <br id="toBr">
+                    <input type="number" placeholder="Hours" class="time" id="hours" />
+                    <input type="number" placeholder="Mins" class="time" id="mins" /> 
+                    <br>
+                    <input type="submit" value="Remove" class="btn remove" id="removeBtn" />
+                    <input type="submit" value="Add" class="btn add" id="addBtn" />
+                    <input type="reset" value="Clear" class="btn" id="clearBtn" />
+                </div>
             </div>
         </div>
         <div class="map">

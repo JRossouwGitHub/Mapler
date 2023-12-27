@@ -3,6 +3,7 @@ const menuBtn = document.getElementById('menuBtn');
 const form = document.getElementById('form');
 const addBtn = document.getElementById('addBtn');
 const removeBtn = document.getElementById('removeBtn');
+const clearBtn = document.getElementById('clearBtn');
 menuBtn.addEventListener('click', () => {
     if(inputs.style.display === 'flex') {
         inputs.style.display = 'none';
@@ -10,6 +11,25 @@ menuBtn.addEventListener('click', () => {
     } else {
         inputs.style.display = 'flex';
         menuBtn.style.transform = 'rotate(-180deg)';
+    }
+})
+
+clearBtn.addEventListener('click', () => {
+    const from = document.getElementById('from');
+    const to = document.getElementById('to');
+    from.value = ''
+    to.value = ''
+    const hours = document.getElementById('hours');
+    const minutes = document.getElementById('minutes');
+    hours.value = ''
+    minutes.value = ''
+    const fromList = document.getElementById('fromList');
+    const toList = document.getElementById('toList');
+    if(fromList){
+        fromList.remove()
+    }
+    if(toList){
+        toList.remove()
     }
 })
 
