@@ -157,3 +157,5 @@ removeBtn.addEventListener('click', () => {
 
     recursivelyRemovePortals(portals, null, from, to)
 })
+
+zones.sort((a,b) => a.name < b.name ? -1 : 1)

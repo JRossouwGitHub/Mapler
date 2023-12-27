@@ -64,20 +64,20 @@ input:focus{
 }
 
 .time{
-    width: 3.75rem;
+    width: 3.85rem;
 }
 
 .btn{
     display: block;
     cursor: pointer;
-    width: 12rem;
+    width: 12.5rem;
 }
 
 .add{
     display: inline-block;
     background-color: white;
     color: black;
-    width: 5.5rem;
+    width: 5.75rem;
 }
 
 .remove{
