@@ -217,6 +217,7 @@ map.appendChild(c)
 
 const viewBox = document.getElementById('viewBox')
 
+let scrollScale = 1
 let isGrabbing = false
 let mouse = {
     x: {
@@ -230,7 +231,9 @@ let mouse = {
 }
 let viewBoxOrigin = {
     x: viewBox.getAttribute('viewBox').split(",")[0],
-    y: viewBox.getAttribute('viewBox').split(",")[1]
+    y: viewBox.getAttribute('viewBox').split(",")[1],
+    z1: viewBox.getAttribute('viewBox').split(",")[2],
+    z2: viewBox.getAttribute('viewBox').split(",")[3]
 }
 
 map.addEventListener('mousedown', (e) => {
@@ -256,4 +259,17 @@ map.addEventListener('mousemove', (e) => {
         viewBoxData[1] = parseInt(viewBoxData[1]) + yDiff
         viewBox.setAttribute('viewBox', viewBoxData.join(','))
     }
+})
+
+map.addEventListener('wheel', (e) => {
+    scrollScale += -(e.deltaY / 1000)
+    if(scrollScale <= 0.2) scrollScale = 0.2
+    if(scrollScale >= 3) scrollScale = 3
+
+    let viewBoxData = viewBox.getAttribute('viewBox').split(",")
+    viewBoxData[0] = (((viewBoxOrigin.z1 / scrollScale)/2) * -1) 
+    viewBoxData[1] = (((viewBoxOrigin.z2 / scrollScale)/2) * -1) 
+    viewBoxData[2] = viewBoxOrigin.z1 / scrollScale
+    viewBoxData[3] = viewBoxOrigin.z2 / scrollScale
+    viewBox.setAttribute('viewBox', viewBoxData.join(','))
 })

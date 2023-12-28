@@ -15,10 +15,14 @@ menuBtn.addEventListener('click', () => {
     }
 })
 recenterBtn.addEventListener('click', () => {
+    scrollScale = 1
     let viewBoxData = viewBox.getAttribute('viewBox').split(",")
     viewBoxData[0] = viewBoxOrigin.x
     viewBoxData[1] = viewBoxOrigin.y
+    viewBoxData[2] = viewBoxOrigin.z1
+    viewBoxData[3] = viewBoxOrigin.z2
     viewBox.setAttribute('viewBox', viewBoxData.join(','))
+    viewBox.style.scale = '1'
 })
 
 clearBtn.addEventListener('click', () => {
