@@ -1,251 +1,179 @@
-const map = document.getElementsByClassName('map')[0]
-const canvas = document.getElementsByTagName('canvas')[0]
-const ctx = canvas.getContext('2d')
-let scrollScale = 1
+const canvas = document.getElementById("chartdiv");
 
-canvas.width = map.offsetWidth
-canvas.height = map.offsetHeight
+am5.ready(function() {
+                
+    // Create root element
+    // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+    var root = am5.Root.new("chartdiv");
+    const responsive = am5themes_Responsive.new(root);
 
-let isGrabbing = false
-let mouse = {
-    x: {
-        init: 0,
-        current: 0
-    },
-    y: {
-        init: 0,
-        current: 0
-    }
-}
-
-let portals = [
-    {
-        node: new Node((canvas.width/2), (canvas.height/2), 50, 50, 'SSQ', null, 'red'),
-        connections: [
-            {
-                node: new Node((canvas.width/2) + 150, (canvas.height/2) - 150, 50, 50, 'Thetford', null, 'purple'),
-                connections: [],
-                timer: {
-                    enabled: true,
-                    time: {
-                        hours: 2,
-                        mins: 30
-                    }
-                }
-            },
-            {
-                node: new Node((canvas.width/2) - 150, (canvas.height/2) - 150, 50, 50, 'Martlock', null, 'blue'),
-                connections: [
-                    {
-                        node: new Node((canvas.width/2) - 150, (canvas.height/2) + 150, 50, 50, 'Bridgewatch', null, 'orange'),
-                        connections: [],
-                        timer: {
-                            enabled: true,
-                            time: {
-                                hours: 3,
-                                mins: 30
-                            }
+    responsive.addRule({
+        relevant: am5themes_Responsive.widthXXL,
+        applying: function() {
+            series.setAll({
+                maxRadius: 12,
+                minRadius: 6
+            });
+        },
+        removing: function() {
+            series.setAll({
+                maxRadius: 50,
+                minRadius: 25
+            });
+        },
+    });
+    
+    // Set themes
+    // https://www.amcharts.com/docs/v5/concepts/themes/
+    root.setThemes([
+        am5themes_Animated.new(root),
+        responsive
+    ]);
+    
+    var data = {
+        name: "Root",
+        value: 0,
+        color: am5.color(0xff0000),
+        children: [
+        {
+            name: "SSQ",
+            category: "Hide-Out",
+            image: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/icon_safari.svg",
+            color: am5.color(0xff0000),
+            children: [
+                {
+                    name: "Thetford",
+                    category: "City",
+                    image: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/icon_safari.svg",
+                    timer: {
+                        enabled: false,
+                        time: {
+                            h: "(1h",
+                            m: "30m)"
                         }
                     },
-                    {
-                        node: new Node((canvas.width/2) - 350, (canvas.height/2) - 150, 50, 50, 'Lymhurst', null, 'green'),
-                        connections: [],
-                        timer: {
-                            enabled: true,
-                            time: {
-                                hours: 1,
-                                mins: 15
-                            }
+                    color: am5.color(0x9000ff),
+                    children: [],
+                },
+                {
+                    name: "Martlock",
+                    category: "City",
+                    image: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/icon_safari.svg",
+                    timer: {
+                        enabled: false,
+                        time: {
+                            h: "(2h",
+                            m: "30m)"
                         }
                     },
-                ],
-                timer: {
-                    enabled: true,
-                    time: {
-                        hours: 1,
-                        mins: 15
-                    }
+                    color: am5.color(0x0400ff),
+                    children: [
+                        {
+                            name: "Bridgewatch",
+                            category: "City",
+                            image: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/icon_safari.svg",
+                            timer: {
+                                enabled: false,
+                                time: {
+                                    h: "(3h",
+                                    m: "30m)"
+                                }
+                            },
+                            color: am5.color(0xffd000),
+                            children: [],
+                        },
+                        {
+                            name: "Lymhurst",
+                            category: "City",
+                            image: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/icon_safari.svg",
+                            timer: {
+                                enabled: false,
+                                time: {
+                                    h: "(4h",
+                                    m: "30m)"
+                                }
+                            },
+                            children: [],
+                            color: am5.color(0x00ff00),
+                        }
+                    ]
                 }
-            },
-        ],
-        timer: {
-            enabled: false,
-            time: {
-                hours: 0,
-                mins: 0
-            }
+            ]
         }
-    },
-]
+      ]
+    };
+    
+    // Create wrapper container
+    var container = root.container.children.push(
+      am5.Container.new(root, {
+        width: am5.percent(100),
+        height: am5.percent(100),
+        layout: root.verticalLayout
+      })
+    );
+    
+    // Create series
+    // https://www.amcharts.com/docs/v5/charts/hierarchy/#Adding
+    var series = container.children.push(
+      am5hierarchy.ForceDirected.new(root, {
+        singleBranchOnly: false,
+        downDepth: 1,
+        topDepth: 1,
+        maxRadius: 50,
+        minRadius: 25,
+        valueField: "value",
+        categoryField: "category",
+        childDataField: "children",
+        idField: "name",
+        linkWithStrength: 1,
+        linkWithField: "linkWith",
+        manyBodyStrength: -200,
+        centerStrength: 1,
+        colorFields: "color"
+      })
+    );
 
-map.addEventListener('mousedown', (e) => {
-    map.style.cursor = 'grabbing'
-    isGrabbing = true
-    mouse.x.init = e.offsetX
-    mouse.y.init = e.offsetY
-})
+    series.circles.template.set("forceHidden", true);
+    series.outerCircles.template.set("forceHidden", true);
 
-map.addEventListener('mouseup', (e) => {
-    map.style.cursor = 'grab'
-    isGrabbing = false
-})
+    series.labels.template.setAll({
+        fontSize: 20,
+        y: -75,
+        oversizedBehavior: "none",
+        text: "{name} {timer.time.h} {timer.time.m}"
+    });
+    series.labels.template.adapters.add("y", function(y, target) {
+        return target.dataItem.get("depth") == 0 ? 0 : y;
+    });
 
-map.addEventListener('mousemove', (e) => {
-    mouse.x.current = e.offsetX
-    mouse.y.current = e.offsetY
-    if(isGrabbing){
-        xDiff = (mouse.x.current - mouse.x.init)
-        yDiff = (mouse.y.current - mouse.y.init)
-        recursivelyUpdateMap(portals, xDiff, yDiff)
-        mouse.x.init = e.offsetX
-        mouse.y.init = e.offsetY
+    series.nodes.template.setAll({
+        toggleKey: "none",
+        cursorOverStyle: "default",
+        tooltipText: "",
+    });
+
+    series.nodes.template.setup = function(target) {
+        target.events.on("dataitemchanged", function(ev) {
+            let circle = target.children.push(am5.Circle.new(root, {
+                radius: 50,
+                centerX: am5.percent(50),
+                centerY: am5.percent(50),
+                fill: am5.color("#fff")
+            }));
+            let icon = target.children.push(am5.Picture.new(root, {
+                width: 100,
+                height: 100,
+                centerX: am5.percent(50),
+                centerY: am5.percent(50),
+                src: ev.target.dataItem.dataContext.image
+            }));
+        });
     }
-})
 
-map.addEventListener('wheel', (e) => {
-    scrollScale += -(e.deltaY / 1000)
-    if(scrollScale <= 1) scrollScale = 1
-    if(scrollScale >= 2) scrollScale = 2
+    series.data.setAll([data]);
+    series.set("selectedDataItem", series.dataItems[0]);
 
-    console.log(scrollScale)
-})
-
-const recursivelyUpdateMap = (portals, xDiff, yDiff) => {
-    portals.map(portal => {
-        portal.node.x += xDiff
-        portal.node.y += yDiff
-        if(portal.connections.length > 0){
-            recursivelyUpdateMap(portal.connections, xDiff, yDiff)
-        }
-    })
-}
-
-const recursivelyUpdatePortals = (portals, parentPortal = null) => {
-    portals.map(portal => {
-        if(parentPortal != null && ( portal.timer.time.hours > 0 || portal.timer.time.mins > 0 )){
-            let x1 = portal.node.x + (portal.node.w/2)
-            let y1 = portal.node.y + (portal.node.h/2)
-            let x2 = parentPortal.node.x + (parentPortal.node.w/2)
-            let y2 = parentPortal.node.y + (parentPortal.node.h/2)
-            let xm = (x1 + x2) / 2
-            let ym = (y1 + y2) / 2
-            let timeDisplay = portal.timer.time.hours + "h " + portal.timer.time.mins + "m"
-            ctx.beginPath()
-            ctx.strokeStyle = "#FFF"
-            ctx.fillStyle = "#FFF"
-            ctx.moveTo(x1, y1)
-            ctx.lineTo(x2, y2)
-            ctx.stroke()
-            ctx.closePath()
-            ctx.beginPath();
-            ctx.fillStyle = "#3b3b3b";
-            ctx.fillRect((xm + timeDisplay.length / 2) - ((timeDisplay.length / 2)*10) - 10, ym - 15, (timeDisplay.length * 10) + 20, 30);
-            ctx.closePath();
-            ctx.beginPath();
-            if(portal.timer.time.hours == 0 && portal.timer.time.mins <= 10){
-                ctx.fillStyle = "red";
-                ctx.strokeStyle = "red";
-            } 
-            else if (portal.timer.time.hours == 0 && portal.timer.time.mins > 10) {
-                ctx.fillStyle = "orange";
-                ctx.strokeStyle = "orange";
-            }
-            else {
-                ctx.fillStyle = "#FFF";
-                ctx.strokeStyle = "#FFF";
-            }
-            ctx.font = (portal.node.w / 2.5) + "px Arial";
-            ctx.textAlign = "center";
-            ctx.fillText(timeDisplay, xm + (timeDisplay.length / 2), ym + timeDisplay.length);
-            ctx.closePath();
-            parentPortal.node.Update()
-        }
-        portal.node.Update()
-        if(portal.connections.length > 0){
-            recursivelyUpdatePortals(portal.connections, portal)
-        }
-    })
-}
-
-const recursivelyAddPortals = (portals, from = null, to = null) => {
-    portals.map(portal => {
-        if(portal.node.name.toLowerCase() == to.toLowerCase()){
-            const newPortal = {
-                node: new Node(50, 50, 50, 50, from, null, 'black'),
-                connections: [],
-                timer: {
-                    enabled: true,
-                    time: {
-                        hours: 2,
-                        mins: 30
-                    }
-                }
-            }
-            portal.connections.push(newPortal)
-            return
-        }
-        if(portal.connections.length > 0){
-            recursivelyAddPortals(portal.connections, from, to)
-        }
-    })
-}
-
-const recursivelyRemovePortals = (portals, parent = null, from = null, to = null) => {
-    portals.map(portal => {
-        if(
-            (
-                (portal.node.name.toLowerCase() == from.toLowerCase() && parent.node.name.toLowerCase() == to.toLowerCase()) ||
-                (portal.node.name.toLowerCase() == from.toLowerCase() && portal.timer.enabled && portal.timer.time.hours == 0 && portal.timer.time.mins == 0) || 
-                (portal.timer.enabled && portal.timer.time.hours == 0 && portal.timer.time.mins == 0 && portal.connections.length == 0)
-            )
-        ){
-            portals.splice(portals.indexOf(portal), 1)
-            return
-        }
-        if(portal.connections.length > 0){
-            recursivelyRemovePortals(portal.connections, portal, from, to)
-        }
-    })
-}
-
-const recursivelyUpdateTimers = (portals) => {
-    portals.map(portal => {
-        if(portal.timer.enabled){
-            if(portal.timer.time.hours > 0){
-                if(portal.timer.time.mins > 0){
-                    portal.timer.time.mins--
-                } else {
-                    portal.timer.time.mins = 59
-                    portal.timer.time.hours--
-                }
-            }
-            else if (portal.timer.time.mins > 0){
-                portal.timer.time.mins--
-            }
-            else {
-                portal.timer.time.hours = 0
-                portal.timer.time.mins = 0
-            }
-        }
-        portal.node.Update()
-        if(portal.connections.length > 0){
-            recursivelyUpdateTimers(portal.connections)
-        }
-    })
-}
-
-const main = () => {
-    requestAnimationFrame(main)
-    ctx.save()
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.scale(scrollScale, scrollScale)
-    recursivelyUpdatePortals(portals)
-    ctx.restore()
-}
-
-setInterval(() => {
-    recursivelyUpdateTimers(portals)
-    recursivelyRemovePortals(portals, null, '', '')
-}, 60 * 1000)
-
-main()
+    // Make stuff animate on load
+    series.appear(1, 1);
+    
+}); // end am5.ready()

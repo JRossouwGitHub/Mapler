@@ -143,19 +143,11 @@ to.addEventListener("blur", (e) => {
 })
 
 addBtn.addEventListener('click', () => {
-    const from = document.getElementById('from').value
-    const to = document.getElementById('to').value
-    const hours = document.getElementById('hours').value
-    const mins = document.getElementById('mins').value
-
-    recursivelyAddPortals(portals, from, to)
+    //Call API and redraw on response
 })
 
 removeBtn.addEventListener('click', () => {
-    const from = document.getElementById('from').value
-    const to = document.getElementById('to').value
-
-    recursivelyRemovePortals(portals, null, from, to)
+    //Call API and redraw on response
 })
 
 zones.sort((a,b) => a.name < b.name ? -1 : 1)
