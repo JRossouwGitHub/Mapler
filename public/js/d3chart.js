@@ -261,15 +261,32 @@ map.addEventListener('mousemove', (e) => {
     }
 })
 
-map.addEventListener('wheel', (e) => {
-    scrollScale += -(e.deltaY / 1000)
-    if(scrollScale <= 0.2) scrollScale = 0.2
-    if(scrollScale >= 3) scrollScale = 3
-
+const scaleMap = (scrollScale) => {
     let viewBoxData = viewBox.getAttribute('viewBox').split(",")
     viewBoxData[0] = (((viewBoxOrigin.z1 / scrollScale)/2) * -1) 
     viewBoxData[1] = (((viewBoxOrigin.z2 / scrollScale)/2) * -1) 
     viewBoxData[2] = viewBoxOrigin.z1 / scrollScale
     viewBoxData[3] = viewBoxOrigin.z2 / scrollScale
     viewBox.setAttribute('viewBox', viewBoxData.join(','))
+}
+
+map.addEventListener('wheel', (e) => {
+    scrollScale += -(e.deltaY / 1000)
+    if(scrollScale <= 0.2) scrollScale = 0.2
+    if(scrollScale >= 3) scrollScale = 3
+
+    scaleMap(scrollScale)
 })
+
+const zoom = (direction) => {
+    if(direction > 0) {
+        scrollScale += 0.2
+    } else {
+        scrollScale -= 0.2
+    }
+
+    if(scrollScale <= 0.2) scrollScale = 0.2
+    if(scrollScale >= 3) scrollScale = 3
+
+    scaleMap(scrollScale)
+}
