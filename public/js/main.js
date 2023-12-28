@@ -1,5 +1,6 @@
 const inputs = document.getElementById('input');
 const menuBtn = document.getElementById('menuBtn');
+const recenterBtn = document.getElementById('recenterBtn');
 const form = document.getElementById('form');
 const addBtn = document.getElementById('addBtn');
 const removeBtn = document.getElementById('removeBtn');
@@ -12,6 +13,12 @@ menuBtn.addEventListener('click', () => {
         inputs.style.display = 'flex';
         menuBtn.style.transform = 'rotate(-180deg)';
     }
+})
+recenterBtn.addEventListener('click', () => {
+    let viewBoxData = viewBox.getAttribute('viewBox').split(",")
+    viewBoxData[0] = viewBoxOrigin.x
+    viewBoxData[1] = viewBoxOrigin.y
+    viewBox.setAttribute('viewBox', viewBoxData.join(','))
 })
 
 clearBtn.addEventListener('click', () => {

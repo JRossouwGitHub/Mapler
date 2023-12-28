@@ -21,6 +21,7 @@ body {
     display: flex;
     flex-direction: row;
     height: 100vh;
+    overflow: none;
 }
 
 .menu{
@@ -32,6 +33,7 @@ body {
     border-right: 1px solid var(--secondary);
     font-size: 2rem;
     height: max-content;
+    overflow: none;
 }
 
 .menu > * {
@@ -47,6 +49,7 @@ body {
     background-color: var(--primary);
     padding: 1rem;
     height: max-content;
+    overflow: none;
 }
 
 input{
@@ -93,6 +96,10 @@ input:focus{
     height: 100%;
     overflow: hidden;
     cursor: grab;
+    position: relative;
+    left: 0;
+    top: 0;
+    overflow: hidden;
 }
 
 .list{
@@ -116,4 +123,20 @@ input:focus{
 .flex{
     display: flex;
     flex-direction: column;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+hr{
+    display: block;
+    width: 80%;
+    margin: 0 auto !important;
 }
